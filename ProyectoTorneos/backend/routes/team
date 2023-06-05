@@ -1,0 +1,24 @@
+const express = require("express");
+
+const router = express.Router()
+
+const {createTeam,getTeams,myTeams,getTeamUsers,leaveTeam} = require("../controllers/Teams")
+const authMiddleware = require("../middleware/session");
+const { joinTeam } = require("../controllers/Teams");
+
+
+router.post("/createTeam",authMiddleware,createTeam);
+
+router.get("/getTeams",authMiddleware,getTeams);
+
+router.post("/joinTeam",authMiddleware,joinTeam);
+
+router.get("/myTeams",authMiddleware,myTeams);
+
+router.get('/teams-with-users',authMiddleware,getTeamUsers);
+
+router.delete("/leaveTeam",authMiddleware,leaveTeam);
+
+
+
+module.exports=router;

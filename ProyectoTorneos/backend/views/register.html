@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %} Regístrate {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Regístrate en Torneos</h1>
+
+        <form action="/auth/register" class="mt-4" method="post">
+            <div>  
+                <label for="name"><i class="fas fa-user"></i></label>
+                <input type="text" name="name" placeholder="Nombre Completo" id="name" required>
+            </div>
+            <div class="mt-3">  
+                <label for="email"><i class="fas fa-user"></i></label>
+                <input type="email" name="email" placeholder="Email" id="email" required>
+            </div>
+            <div class="mt-3">  
+                <label for="nickname"><i class="fas fa-user"></i></label>
+                <input type="text" name="nickname" placeholder="Nombre de usuario" id="nickname" required>
+            </div>
+            <div class="mt-3">  
+                <label for="password"><i class="fas fa-lock"></i></label>
+                <input type="password" name="password" placeholder="Contraseña" id="password" required>
+            </div>
+            <div class="mt-3">  
+                <label for="conf_password"><i class="fas fa-lock"></i></label>
+                <input type="password" name="conf_password" placeholder="Confirmar contraseña" id="conf_password" required>
+            </div>
+            <div class="mt-3">  
+                <label for="sport"><i class="fas fa-user"></i></label>
+                <input type="text" name="sport" placeholder="Deporte" id="sport" required>
+            </div>
+            <div class="mt-3">  
+                <label for="schedule"><i class="fas fa-user"></i></label>
+                <input type="text" name="schedule" placeholder="Horario" id="schedule" required>
+            </div>
+            <div class="mt-3">
+                <input type="submit" class="btn btn-primary" value="Regístrate">
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

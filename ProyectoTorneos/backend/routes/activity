@@ -1,0 +1,15 @@
+const express = require("express");
+
+const router = express.Router()
+
+const {createActivity,getActivitys,suscribeActivity,getMyActivitys,submitResult} = require("../controllers/Activitys")
+const authMiddleware = require("../middleware/session")
+
+
+router.post("/createActivity",authMiddleware, createActivity);
+router.get("/getActivitys",authMiddleware, getActivitys);
+router.get("/getMyActivitys",authMiddleware,getMyActivitys)
+router.post("/suscribeActivity",authMiddleware,suscribeActivity);
+router.put("/submitResult/:id",authMiddleware,submitResult);
+
+module.exports = router

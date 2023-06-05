@@ -1,0 +1,404 @@
+const express = require("express");
+const { matchedData } = require("express-validator");
+const router = express.Router();
+const mysql = require("mysql");
+const conection = require("../connection");
+const { User, Tournament, Team, TournamentTeams, TeamMember, Logs } = require("../models/models");
+const { Op } = require("sequelize");
+
+require("dotenv").config();
+db = conection;
+
+async function f_getPlayersInTournament(tournamentId) {
+    // const playersInTournament = await TournamentPlayers.findAll({
+    //     where: {
+    //         id: tournamentId,
+    //     },
+    // });
+
+    return 0
+}
+
+async function countTeamsInTournament(tournamentId) {
+    const teamsInTournament = await TournamentTeams.findAll({
+        where: {
+            tournamentId: tournamentId,
+        },
+    })
+
+    return teamsInTournament
+}
+
+function generateTeamsPerGroup(teamsCount) {
+    let numGroups = 2
+    let minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    let maxTeamsInGroup = 5
+
+    while ( minTeamsInGroup > maxTeamsInGroup) {
+        numGroups += 1
+        minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    }
+    
+    let groups = []
+    let groupCounter = 0
+    for(let i = 0; i<numGroups; i++){
+        let teamsInGroup = minTeamsInGroup
+        groupCounter += teamsInGroup
+        groups.push(teamsInGroup)
+    }
+    
+    let restoTeams = teamsCount % numGroups
+    for(let i=0; i<groups.length; i++) {
+        if(restoTeams != 0) {
+            groups[i] += 1
+            restoTeams -= 1
+        }
+    }
+
+    return groups
+}
+
+// ROUND ROBIN SCHEDULE
+
+function generateTeamsPerGroup(teamsCount) {
+    let numGroups = 2
+    let minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    let maxTeamsInGroup = 5
+
+    while ( minTeamsInGroup > maxTeamsInGroup) {
+        numGroups += 1
+        minTeamsInGroup = Math.floor(teamsCount / numGroups)
+    }
+    
+    let groups = []
+    let groupCounter = 0
+    for(let i = 0; i<numGroups; i++){
+        let teamsInGroup = minTeamsInGroup
+        groupCounter += teamsInGroup
+        groups.push(teamsInGroup)
+    }
+    
+    let restoTeams = teamsCount % numGroups
+    for(let i=0; i<groups.length; i++) {
+        if(restoTeams != 0) {
+            groups[i] += 1
+            restoTeams -= 1
+        }
+    }
+
+    return groups
+}
+
+function ordenamientoAleatorio(a, b) { return 0.5 - Math.random() }
+
+function generateGroups(teams) {
+    let teamsCount = teams.length
+    let groupsCount = generateTeamsPerGroup(teamsCount)
+    teams.sort(ordenamientoAleatorio)
+    
+    let groups = new Object()
+    for(let i=0; i<groupsCount.length; i++) {
+        groups[`Grupo ${i+1}`] = new Object()
+        groups[`Grupo ${i+1}`].teams = []
+        for(let j=0; j<groupsCount[i];j++)
+            groups[`Grupo ${i+1}`].teams.push(teams.pop())
+    }
+    
+    return groups
+}
+
+function generateMatchesImpar(group, numTeams, numJornadas) {
+    let schedule = new Object()
+    
+    for (let i=0; i<numJornadas; i++) {
+        let matches = []
+        
+        for(let j=0; j<(numTeams/2)-1; j++) {
+            let match = [group[j], group[numTeams - 1 - j]]
+            matches.push(match)
+        }
+        schedule[`Jornada ${i+1}`]=(matches)
+        const firstTeam = group.shift()
+        group.push(firstTeam)
+    }
+    
+    return schedule
+}
+
+function generateMatchesPar(group, numTeams, numJornadas) {
+    let schedule = new Object()
+    
+    for (let i=0; i<(numJornadas-1); i++) {
+        let matches = []
+        for(let j=0; j<(numTeams/2); j++) {
+            let match = [group[j], group[numTeams - 1 - j]]
+            
+            if (i == numJornadas-2 && j==0) {
+                let temp = match[1]
+                match[1] = match[0]
+                match[0] = temp
+            }
+                
+            matches.push(match)
+        }
+        
+        schedule[`Jornada ${i+1}`]=(matches)
+        const secondTeam = group.splice(1, 1)[0]
+        group.push(secondTeam)
+    }
+    
+    return schedule
+}
+
+function generateMatchesInGroup(group) {
+    let numTeams = group.length
+    let numJornadas = numTeams
+    let numMatchesPerJornada = Math.ceil(numTeams / 2)
+
+    let schedule = numTeams % 2 == 0 
+        ? generateMatchesPar(group, numTeams, numJornadas)
+        : generateMatchesImpar(group, numTeams, numJornadas)
+    
+    return schedule
+}
+
+async function generateTournamentSchedule(tournamentId, tournamentTeams) {
+    let groups = generateGroups(tournamentTeams)
+    let numGroups = Object.keys(groups).length
+    
+    for(let i=0; i<numGroups; i++) {
+        groups[`Grupo ${i+1}`].matches = {}
+        groups[`Grupo ${i+1}`].matches = generateMatchesInGroup(groups[`Grupo ${i+1}`].teams)
+    }
+    
+    return groups;
+}
+
+// var equipos = ['Real Madrid', 'Barça', 'Atlético de Madrid', 'Sevilla', 'Betis', 'Cádiz', 'Valencia', 'Villareal', 'Osasuna', 'Real Sociedad', 'Celta', 'Athletic Bilbao', 'RCD Espanyol', ]
+
+// generateTournament(1, equipos)
+
+async function fixTeams() {
+
+}
+
+const getTeamsInTournament = async (req, res) => {
+    try {
+        const { tournamentId } = req.params;
+
+        const teams = await Tournament.findAll({
+            attributes: [], 
+            where: {
+                id: tournamentId
+            },
+            include: {
+              model: Team,
+              through: {
+                model: TournamentTeams
+              }
+            }
+        });
+
+        res.send(teams)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error " + err });
+    }
+};
+
+
+const getPlayersInTournament = async (req, res) => {
+    res.send(f_getPlayersInTournament(req.body.tournamentId))
+};
+
+const generateTournament = async (req, res) => {
+    try {
+        const { tournamentId } = req.body;
+        const tournament = await Tournament.findOne({
+            where: {
+                id: tournamentId,
+            },
+        }) 
+
+        const teams = await Tournament.findAll({
+            attributes: [], 
+            where: {
+                id: tournamentId
+            },
+            include: {
+              model: Team,
+              attributes: ['id', 'name'],
+              through: {
+                attributes: [], 
+                model: TournamentTeams
+              }
+            }
+        });
+
+        const teamsArray = []
+        for(let team of teams[0].teams)
+            teamsArray.push(team.name)
+
+        if (teamsArray.length < tournament.min_teams)
+             return res.status(403).json({ message: "No se ha cumplido el mínimo de equipos necesarios." })
+
+        const schedule = await generateTournamentSchedule(tournamentId, teamsArray)
+        res.status(201).json(schedule)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error " + err });
+    }
+}
+
+const createTournament = async (req, res) => {
+    try {
+        // Extract data from request body
+        const { name, description, sport, date_start, date_end, 
+            min_teams, max_teams, max_players_team, type, privacity } = req.body;
+
+        rounds = 5
+
+        // Create tournament in database
+        const [tournament, created] = await Tournament.findOrCreate({
+            where: {
+                name,
+            },
+            defaults: {
+                name, description, sport, date_start, date_end, min_teams, max_teams, max_players_team, rounds, type, privacity
+            },
+        });
+
+        if (!created)
+            return res.status(409).json({ message: "Tournament already exists" });
+
+        // Send response with success message
+        const logMessage = `@${req.user.nickname} ha creado el torneo de ${sport} llamado ${name}`;
+        await Logs.create({ message: logMessage, category: sport });
+        res.status(201).json({ message: "Tournament created successfully" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err });
+    }
+};
+
+const getTournaments = async (req, res) => {
+    try {
+        var data = "";
+        data = await Tournament.findAll();
+        res.send(data);
+    } catch (err) {
+        console.log(err); //Opcional
+        handleHttpError(res, "ERROR_GET_TOURNAMENT: " + err); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
+    }
+};
+
+const suscribePlayerToTournament = async (req, res) => {
+    let userId = req.user.id;
+    let tournamentId = req.body.tournamentId;
+    const tournamentInfo = await Tournament.findOne({ where: { id: tournamentId } })
+    let freeTeam = tournamentInfo.name+"_free_"+tournamentInfo.id
+    let sport = tournamentInfo.sport
+    let max_players_team = tournamentInfo.max_players_team
+    const empty = 0
+
+    if (tournamentInfo.type != 2)
+        return res.status(409).json({ message: "To this tournament cannot join players" });
+
+    const [team, created] = await Team.findOrCreate({
+        where: {
+            name: freeTeam
+        },
+        defaults: {
+            freeTeam, sport, freeTeam, max_players_team
+        },
+    });
+
+    let teamId = team.teamId
+
+    const [player, created2] = await TeamMember.findOrCreate({
+        where: {
+            userId: userId, teamId: teamId
+        },
+        defaults: {
+            empty, userId, teamId
+        },
+    });
+
+    if (!created2)
+        return res.status(409).json({ message: "This player is already in this tournament" });
+
+    res.send(`¡Player joined!`);
+};
+
+const subscribeTeamToTournament = async (req, res) => {
+    try {
+        let teamId = req.body.teamId
+        let tournamentId = req.body.tournamentId
+        const tournamentInfo = await Tournament.findOne({ where: { id: tournamentId } })
+
+        if(2 >= tournamentInfo.max_teams)
+            return res.status(406).json({ message: "Número maximo de equipos en el torneo sobrepasado." })
+        
+        let cero = 0
+
+        const [tournamentTeam, created] = await TournamentTeams.findOrCreate({
+            where: {
+                teamId: teamId, tournamentId: tournamentId
+            },
+            defaults: {
+                cero, cero, cero, cero, cero
+            },
+        });
+
+        if (!created)
+            return res.status(409).json({ message: "Este equipo ya está suscrito al torneo." });
+
+        res.send(`Subscription to Tournament with success`);
+    } catch(err) {
+        console.log(err)
+        res.send(`Error ${err}`);
+    }
+}
+
+const getMyTournaments = async (req, res) => {
+    try {
+        const tournaments = await User.findAll({
+            attributes: [], 
+            where: {
+                id: req.user.id
+            },
+            include: {
+                model: Team,
+                attributes: ['id'], 
+                through: {
+                    model: TeamMember,
+                    attributes: [], 
+                },
+                include : {
+                    model: Tournament,
+                    through: {
+                        model: TournamentTeams,
+                        attributes: [], 
+                    },
+                }
+            }
+        });
+            
+        res.send(tournaments);
+    } catch (err) {
+        console.log(err);
+
+        handleHttpError(res, "ERROR_GET_MY_TOURNAMENT ");
+    }
+};
+
+module.exports = { 
+    createTournament, 
+    getTournaments, 
+    suscribePlayerToTournament, 
+    subscribeTeamToTournament,
+    getMyTournaments, 
+    generateTournament, 
+    getPlayersInTournament, 
+    getTeamsInTournament 
+};

@@ -1,0 +1,371 @@
+####Crear usuario
+POST http://localhost:3001/auth/register HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+
+{
+    "name": "Lucass2",
+    "email": "lucass2@live.u-tad.com",
+    "nickname":"Lucs2s",
+    "sport":"Futbol",
+    "schedule":"11:00-12:00",
+    "password":"1234",
+    "conf_password":"1234",
+    "profilePic":"https://img.freepik.com/vector-premium/retro-gentleman-avatar-portrait-figure-vector-art_1056-4249.jpg?w=2000"
+}
+### login usuario
+POST http://localhost:3001/auth/login HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+
+{
+
+    "username": "lucass@live.u-tad.com",
+    "password":"1234"
+}
+
+
+
+#######editar tu usuario los campos que le pases son los que se editan########################
+POST http://localhost:3001/auth/update  HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+"nickname": "nuevo_nickname",
+"profilePic": "https://1.bp.blogspot.com/-sffTqPYtaHY/Xl5hm6h8CQI/AAAAAAAAcew/KPScjjXwwgkQT-5spxLURf01P7RPbke8ACLcBGAsYHQ/s1600/12.png"
+}
+
+
+##### PARA ADMINISTRADORES ##########################
+
+##eliminar usuario
+DELETE http://localhost:3001/auth/delete/javichu2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+###actualizar usuario
+PUT http://localhost:3001/auth/update/1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+"nickname": "javivi"
+}
+
+
+### todos usuario
+GET http://localhost:3001/auth/getUsers HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+
+
+####elimina el modelo deseado le especificas el modelo y el id del modelo
+DELETE http://localhost:3001/Auth/User/8 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+
+################# FIN ADMIN ###################
+### getUser usuario
+GET http://localhost:3001/auth/getUser HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IkphdmkyMyIsImlhdCI6MTY4NTAzMTg4NSwiZXhwIjoxNzIxMDI4Mjg1fQ.XZDN__acchHELplcxySwpenzlz86Kdg-ka6VWP8h7cc
+
+
+
+
+######crear actividades
+POST http://localhost:3001/activity/createActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUxMDE3NDIsImV4cCI6MTcyMTA5ODE0Mn0.IdC5obFWHLqLbN5WokvyX0_XvPxma-MhowSZcGGRNO8
+
+{
+  "name": "DAtass vs cyber",
+  "description": "Partido de furbol",
+  "sport": "Fútbol",
+  "date": "2023-04-05T12:00:00Z",
+  "privacity": true,
+  "max_plazas": 20,
+  "status": true,
+  "result": "",
+  "place": "Futbol sala utad"
+}
+######crear actividades
+
+POST http://localhost:3001/activity/createActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6IkphdmkyMyIsImlhdCI6MTY4NTAzNzg5NiwiZXhwIjoxNzIxMDM0Mjk2fQ.b__coF0QrvtR7-S1k94UaSPtPz6BcgzsU7EbRfNqnm8
+
+{
+  "name": "Real Madrid vs Man.City",
+  "description": "Partido de furbol",
+  "sport": "Fútbol",
+  "date": "2023-05-28T12:00:00Z",
+  "privacity": true,
+  "max_plazas": 20,
+  "status": true,
+  "result": "0    -   4",
+  "place": "Futbol sala utad"
+}
+
+######crear actividades 2
+POST http://localhost:3001/activity/createActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "name": "SSH vs DAWE",
+  "description": "Partido de furbol",
+  "sport": "Fútbol",
+  "date": "2023-04-05T12:00:00Z",
+  "privacity": true,
+  "max_plazas": 10,
+  "status": true,
+  "result": "",
+  "place": "Futbol sala utad"
+}
+
+######crear actividades 3
+POST http://localhost:3001/activity/createActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
+
+{
+  "name": "Adlex23 vs Pablo2",
+  "description": "Partido de tenis",
+  "sport": "Tenis",
+  "date": "2023-05-23T12:00:00Z",
+  "privacity": true,
+  "max_plazas": 2,
+  "status": true,
+  "result": "",
+  "place": "Pista tenis U-tad"
+}
+
+### todos las actividades
+GET http://localhost:3001/activity/getActivitys HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+### todos las actividades
+POST http://localhost:3001/activity/suscribeActivity HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  
+  "activityId": 1,
+  "permission": 1
+}
+### todos las actividades de un usuario
+GET http://localhost:3000/activity/getMyActivitys HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+###sumbit result actibity####
+PUT http://localhost:3001/activity/submitResult/3 HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
+
+{
+  "result":"1-0"
+}
+
+####create team##########
+
+POST http://localhost:3001/team/createTeam HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3MycyIsImlhdCI6MTY4NTEzNjAzMSwiZXhwIjoxNzIxMTMyNDMxfQ.7Yl4f5lwAI5j3uoEo03czbc-jcr658mA17OWBQqgGJk
+
+{
+  "name":"SSH",
+  "sport":"Futbol",
+  "logo":"logo512.png",
+  "description": "saddasads",
+  "max_players_team":8
+}
+
+####create team##########
+
+POST http://localhost:3001/team/createTeam HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3NzIiwiaWF0IjoxNjg1MTM2MDEzLCJleHAiOjE3MjExMzI0MTN9.ZXAh54unIujFZo6-HOkb7gmd_6Fgb5GbSqBer2a23hQ
+
+{
+  "name":"MedioPulmon",
+  "sport":"Football",
+  "logo":"logo512.png",
+  "description": "saddasads",
+  "max_players_team":8
+}
+
+####create team 2##########
+
+POST http://localhost:3001/team/createTeam HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "name":"DAWE",
+  "sport":"Football",
+  "logo":"logo.png",
+  "description": "saddasads",
+  "max_players_team":8
+}
+
+####create team##########
+
+POST http://localhost:3001/team/createTeam HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMzQiLCJpYXQiOjE2ODUwNTMzNDgsImV4cCI6MTcyMTA0OTc0OH0.4sjiRgjMblEphLxbvR4NJEC-qOrWDpsR16RkEkALdIY
+
+{
+  "name":"LIONS",
+  "sport":"Football",
+  "logo":"logo.png",
+  "description": "saddasads",
+  "max_players_team":8
+}
+
+####create team##########
+
+POST http://localhost:3001/team/createTeam HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "name":"SecurityData",
+  "sport":"Football",
+  "logo":"logo.png",
+  "max_players_team":8
+}
+#####get teams####
+GET http://localhost:3001/team/getTeams HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+##########inscribe into a team###########
+POST  http://localhost:3001/team/joinTeam
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3NzIiwiaWF0IjoxNjg1MTM2MDEzLCJleHAiOjE3MjExMzI0MTN9.ZXAh54unIujFZo6-HOkb7gmd_6Fgb5GbSqBer2a23hQ
+
+{
+ "id":3
+}
+
+#####get my team####
+GET http://localhost:3001/team/myTeams HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+#######get de teams with the useres######
+GET http://localhost:3001/team/teams-with-users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+##### get logs########
+GET http://localhost:3001/logs/getLogs
+Authorization: Brearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6InBhYmxvIiwiaWF0IjoxNjg1MTEzNDYyLCJleHAiOjE3MjExMDk4NjJ9.PrCE-tfUvCPmE1jwrf-prbzMZTl6UjokhiXo1p-seSw
+
+
+##### CREAR UN TORNEOS 
+# privacity -> 1: torneo privado (admin elige a quien meter), 2: torneo público (cualquiera puede unirse) 
+# "type": -> 1: solo para equipos o 2: equipos + jugadores sueltos
+POST http://localhost:3001/tournament/createTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "name": "Torneito",
+  "description": "Champions League",
+  "sport": "Fútbol",
+  "date_start": "2023-05-05T12:00:00Z",
+  "date_end": "2023-05-30T12:00:00Z",
+  "min_teams": 1,
+  "max_teams": 10,
+  "max_players_team": 12,
+  "type": 1,
+  "privacity": 2
+}
+
+##### DEVUELVE TODOS LOS TORNEOS
+GET http://localhost:3001/tournament/getTournaments HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+##### DEVUELVE TORNEOS EN LOS QUE EL USUARIO ESTÁ INSCRITO
+GET http://localhost:3001/tournament/getMyTournaments HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+##### METER A UN EQUIPO AL TORNEO
+POST http://localhost:3001/tournament/subscribeTeamToTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "teamId": 6,
+  "tournamentId": 1
+}
+
+##### DEVOLVER EQUIPOS DEL TORNEO
+GET http://localhost:3001/tournament/getTeamsTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "tournamentId": 1
+}
+
+##### GENERAR TORNEO
+POST http://localhost:3001/tournament/generateTournament HTTP/1.1
+Content-Type: application/json
+api_key: Api-publica-123
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+  "tournamentId": 1
+}
+
+######CHAT##
+
+### Get todos los mensajes
+GET http://localhost:3001/chat/messages HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3MycyIsImlhdCI6MTY4NTU0NzU0MywiZXhwIjoxNzIxNTQzOTQzfQ.c54-sok4k0TNlV4AS93Fhs1PNB7F2gW_IgARvzjuFgA
+###
+
+### Post un mensaje
+POST http://localhost:3001/messages HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6Ikx1Y3MycyIsImlhdCI6MTY4NTU0NzU0MywiZXhwIjoxNzIxNTQzOTQzfQ.c54-sok4k0TNlV4AS93Fhs1PNB7F2gW_IgARvzjuFgA
+
+{
+    "message": "Hola mundo"
+}
+
+
+
+### actualiza mensaje
+PUT http://localhost:3001/messages/1 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImphdmljaHUyMyIsImlhdCI6MTY4NTAxODMwMiwiZXhwIjoxNzIxMDE0NzAyfQ.BgAfVbAYiezVDB-Pohh2V_GV1IxH4EeJaLDNnSYLWxU
+
+{
+    "message": "Hola mundo, actualizado"
+}

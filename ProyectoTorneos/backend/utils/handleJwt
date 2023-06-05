@@ -1,0 +1,32 @@
+const jwt = require("jsonwebtoken")
+
+/**
+ * El objeto del usuario
+ * @param {*} user 
+ */
+const tokenSign = async (nickname) => {
+    const sign = jwt.sign(
+        {
+            nickname
+        },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "9999h"
+        }
+    )
+    return sign
+}
+
+/**
+ * Token se sesión
+ * @param {*} tokenJwt 
+ */
+const verifyToken = async (tokenJwt) => {
+    try {
+        return jwt.verify(tokenJwt, process.env.JWT_SECRET)
+    }catch(err) {
+        console.log(err)
+    }
+}
+
+module.exports = { tokenSign, verifyToken }

@@ -1,0 +1,17 @@
+const express = require("express");
+
+const router = express.Router()
+
+const {createTournament, getTournaments, suscribePlayerToTournament, subscribeTeamToTournament, generateTournament, getMyTournaments, getTeamsInTournament } = require("../controllers/Tournaments")
+const authMiddleware = require("../middleware/session")
+
+
+router.post("/createTournament", authMiddleware, createTournament);
+router.get("/getTournaments", authMiddleware, getTournaments);
+router.get("/suscribePlayerToTournament", authMiddleware, suscribePlayerToTournament)
+router.post("/subscribeTeamToTournament", authMiddleware, subscribeTeamToTournament);
+router.get("/getMyTournaments", authMiddleware, getMyTournaments);
+router.get("/getTeamsInTournament/:tournamentId", authMiddleware, getTeamsInTournament);
+router.post("/generateTournament", authMiddleware, generateTournament)
+
+module.exports = router

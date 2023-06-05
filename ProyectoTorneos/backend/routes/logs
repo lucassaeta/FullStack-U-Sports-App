@@ -1,0 +1,14 @@
+const express = require("express");
+
+const router = express.Router()
+
+
+const authMiddleware = require("../middleware/session");
+const { getLogs } = require("../controllers/Logs");
+
+
+router.get("/getLogs",authMiddleware,getLogs);
+
+
+
+module.exports=router;

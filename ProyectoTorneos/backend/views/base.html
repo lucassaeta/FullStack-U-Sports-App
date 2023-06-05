@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Torneos - {% block title %} {% endblock %}</title>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://kit-pro.fontawesome.com/releases/v6.2.1/css/pro.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+        <script src="://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+
+    <style>
+      /* Styles for df tables */
+      th, td {
+        padding: 5px;
+      }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Torneos Prueba</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                    <li class={% if module=='login' %}"active"{%else%}""{%endif%}><a class="nav-link" href="/auth/login"><i class="fa-solid fa-mask"></i> Login</a></li>
+                    <li class={% if module=='register' %}"active"{%else%}""{%endif%}><a class="nav-link" href="/auth/register"><i class="fa-solid fa-square-plus"></i> Regístrate</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mt-5">
+        {% block content %} {% endblock %}
+    </div>
+
+</body>
+
+</html>

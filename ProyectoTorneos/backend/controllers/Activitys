@@ -1,0 +1,174 @@
+const express = require("express");
+const { matchedData } = require("express-validator");
+const router = express.Router();
+const mysql = require("mysql");
+const conection = require("../connection");
+const { handleHttpError } = require('../utils/handleError')
+const { Activity, ActivityPlayer,Logs } = require("../models/models");
+const { Op } = require("sequelize");
+
+require("dotenv").config();
+db = conection;
+
+const createActivity = async (req, res) => {
+  try {
+    // Extraccion de los datos de la requeest
+    const {
+      name,
+      description,
+      sport,
+      date,
+      privacity,
+      max_plazas,
+      status,
+      result,
+      place,
+    } = req.body;
+
+    //Crea la actividad en la base de datos
+    const [activity, created] = await Activity.findOrCreate({
+      where: {
+        name,
+      },
+      defaults: {
+        description,
+        sport,
+        date,
+        privacity,
+        max_plazas,
+        status,
+        result,
+        place,
+      },
+    });
+    //si no se ha podido  crear devuelve esto
+    if (!created) {
+      return res.status(409).json({
+        message: "Activity already exists",
+      });
+    }
+
+    // Si ha sido un exito devuelve esto
+    const logMessage = `@${req.user.nickname} ha creado una actividad de ${sport} llamada: ${name}`;
+    await Logs.create({ message: logMessage, category: sport });
+    
+
+    res.status(201).json({
+      message: "Activity created successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
+const getActivitys = async (req, res) => {
+  try {
+    var data = "";
+    //busca todas las actividades de la tabla
+    data = await Activity.findAll();
+    //envia los datos
+    res.send(data);
+  } catch (err) {
+    console.log(err); //Opcional
+    handleHttpError(res, "ERROR_GET_ACTIVITY"); //Si nos sirve el de por defecto que hemos establecido, no es necesario pasar el 403
+  }
+};
+
+const suscribeActivity = async (req, res) => {
+  //coge el usuario de la request ya que el authmiddleware lo ha insertado 
+  let userId = req.user.id;
+  //console.log(req.user);
+  let activityId = req.body.activityId;
+  let permission = req.body.permission;
+
+  //busca en la tabla activity_player un registro que haga match con el userId y activityUd para saber si esta suscrito
+  const activityPlayer2 = await ActivityPlayer.findOne({
+    where: {
+      userId: userId,
+      activityId: activityId,
+    },
+  });
+
+  if (activityPlayer2) { //si 
+    // El usuario ya está relacionado con esta actividad entonces te dira que ya esta suscrito
+    res.send(`ALREADY SUSBCRIBE`);
+  } else {
+    // El usuario no está relacionado con esta actividad se creara un registro en la tabla 
+    const activityPlayer = await ActivityPlayer.create({
+      userId: userId,
+      activityId: activityId,
+      permission: permission,
+    });
+    res.send(`SUBSCRIBE TO THE ACTIVITY`);
+  }
+
+  //if (!created)
+  //return res.send("Already susbscribe")
+};
+
+const getMyActivitys = async (req, res) => {
+  try {
+    var data = "";
+    //busca todas las actividades en las que estas suscrito buscando con tu id
+    data = await ActivityPlayer.findAll({
+      where: {
+        UserId: req.user.id,
+      },
+    });
+    const activityPlayerIds = [];
+    for (let i = 0; i < data.length; i++) {
+      activityPlayerIds.push(data[i].activityId);//mete las id de actividades en el array creado anteriormente haciendo psuh
+    }
+    const relatedRecords = await Activity.findAll({//busca todas las actividades con los ids correspondientes de el array
+      where: {
+        id: activityPlayerIds,
+      },
+    });
+
+    res.send(relatedRecords);
+  } catch (err) {
+    console.log(err);
+
+    handleHttpError(res, "ERROR_GET_ACTIVITY");
+  }
+};
+
+
+const submitResult = async (req, res) => {
+  const { id } = req.params; 
+  const { result } = req.body; 
+  const status=false;
+
+  try {
+    // Encuentra la actividad con el id dado 
+    const activity = await Activity.findOne({ where: { id } });
+
+    if (!activity) {
+      // Si la actividad no se encuentra, retorna un 404
+      return res.status(404).json({ message: `Activity with ID ${id} not found.` });
+    }
+
+    // Actualiza el resultado en la base de datos
+    await activity.update({ result, status });
+
+    // Retorna un mensaje que indica que la actividad se ha actualizado
+    const logMessage = `@${req.user.nickname} ha actualizado el resultado del partido ${activity.name} a: ${result}`;
+    await Logs.create({ message: logMessage });
+    return res.json({ message: `Result submitted for activity ${id}.`, activity });
+  } catch (error) {
+    // Si hay algún error, retorna 500
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+module.exports = {
+  createActivity,
+  getActivitys,
+  suscribeActivity,
+  getMyActivitys,
+  submitResult,
+};

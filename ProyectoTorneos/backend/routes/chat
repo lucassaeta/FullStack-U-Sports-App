@@ -1,0 +1,23 @@
+const express = require("express");
+const chatController = require('../controllers/CharMessage');
+const router = express.Router()
+const authMiddleware = require("../middleware/session");
+
+
+
+
+
+
+
+
+
+router.get('/messages',authMiddleware, chatController.getAllMessages);
+router.post('/messages',authMiddleware, chatController.postMessage);
+router.put('/messages/:id',authMiddleware, chatController.updateMessage);
+router.get('/getMessagesById',authMiddleware, chatController.getUserMessages);
+
+
+
+
+
+module.exports=router;

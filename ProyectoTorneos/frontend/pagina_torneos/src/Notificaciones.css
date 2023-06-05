@@ -1,0 +1,45 @@
+.notificaciones {
+    padding: 10px;
+  }
+  
+  .notificaciones h2 {
+    text-align: center;
+    font-size: 2em;
+  }
+  
+  .notificacion {
+    border: 1px solid #0066ef;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .notificacion-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .notificacion-content {
+    flex-grow: 1;
+    align-items: center;
+    padding-top: 4%;
+  }
+  
+  .notificacion-message {
+    font-size: 1.2em;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .notificacion-date {
+    font-size: 0.8em;
+    text-align: right;
+  }
+  
+  .error-message {
+    color: red;
+  }

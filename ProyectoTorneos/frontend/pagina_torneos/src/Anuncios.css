@@ -1,0 +1,29 @@
+.anuncios {
+    text-align: center;
+}
+
+.anuncios-title {
+    font-size: 2em;
+    color: black;
+    padding: 20px 0;
+}
+
+.post {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.post-image {
+    width: 50%; /* or whatever size you want */
+    max-width: 300px;
+    height: auto;
+}
+
+.post-caption {
+    color: black;
+    font-size: 1.2em;
+}
